@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const db = require("sqlite3").verbose()
 const User = require("../models/User")
 require('dotenv').config() 
-const {check, validationResult} = require("express-validator")
+const {check, validationResult, cookie} = require("express-validator")
 router.post("/registration",
     [
         check('email', "Uncorrect email").isEmail(),
@@ -41,30 +41,27 @@ router.post("/login",
             const { username, email, password } = req.body;
 
             // Ищем пользователя по email или username
-            const user = await User.findOne({ username  });
+            const user = await User.findOne({ where: { username: username } });
+
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
             const salt = bcrypt.genSaltSync()
 
             // Сравниваем пароль из запроса с хешированным паролем в базе данных
-            const isMatch = await bcrypt.hash(password, salt, function(err, hash){
-                if(err) throw err;
+            await bcrypt.hash(password, salt, function(err, hash){
+                if(err) res.status(400).json({message: "Invalid password"});
             
                 bcrypt.compare(password, user.password, function(err, result) {
-                  if (err) {  return res.status(400).json({ message: "Invalid password" });}
-                  const secretKey = process.env.MERRY; // Здесь подставьте ваш секретный ключ для подписи токена
-                  const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
-      
-                  // Устанавливаем токен в куку
-                  res.cookie("token", token, {
-                      httpOnly: true,
-                      // secure: true, // Расскомментируйте, если используете HTTPS
-                      // sameSite: 'none' // Расскомментируйте, если требуется кросс-доменная установка кук
-                  });
-      
-                  // Возвращаем успешный ответ
-                  return res.status(200).json({ message: "Login successful", token });
+                    if (!result) {  return res.status(400).json({ message: "Invalid password" });}
+                    const secretKey = process.env.MERRY; // Здесь подставьте ваш секретный ключ для подписи токена
+                    const accessToken = jwt.sign({ id: user.id, username: user.username, email: user.email }, secretKey, { expiresIn: "1h" });
+                    const refreshToken = jwt.sign({id: user.id, username: user.username, email: user.email}, secretKey, {expiresIn: "1w"})
+                    
+                    res
+                    .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' })
+                    .header('Authorization', accessToken)
+                    .send("login sucessfull");
                 });
                 
             });
