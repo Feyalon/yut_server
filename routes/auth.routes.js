@@ -32,7 +32,7 @@ router.post("/registration",
         console.log(err)
         return res.status(500).json({ message: "Server error" });
     }
-})
+});
 
 
 router.post("/login",    
@@ -56,7 +56,7 @@ router.post("/login",
                     if (!result) {  return res.status(400).json({ message: "Invalid password" });}
                     const secretKey = process.env.MERRY; // Здесь подставьте ваш секретный ключ для подписи токена
                     const accessToken = jwt.sign({ id: user.id, username: user.username, email: user.email }, secretKey, { expiresIn: "1h" });
-                    const refreshToken = jwt.sign({id: user.id, username: user.username, email: user.email}, secretKey, {expiresIn: "1w"})
+                    const refreshToken = jwt.sign({id: user.id, username: user.username, email: user.email}, secretKey, {expiresIn: "30d"})
                     
                     res
                     .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' })
@@ -74,4 +74,15 @@ router.post("/login",
         }
     }
 );
+router.post("/refresh", async (req, res) => {
+    try{
+        const {username, password, refreshToken} = req.body
+        if(res.cookie === refreshToken){
+            console.log("hello world")
+        }
+        
+    }catch(err){
+        console.log(err)
+    }
+})
 module.exports = router

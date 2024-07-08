@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, DATE } = require('sequelize');
 const sequelize = require('../db'); // Предполагается, что у вас есть файл соединения с базой данных
 
 const User = sequelize.define('User', {
@@ -22,8 +22,11 @@ const User = sequelize.define('User', {
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false,    
     lowercase: true
+  },
+  token: {
+    type: DataTypes.STRING
   }
 });
 
