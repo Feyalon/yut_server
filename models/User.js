@@ -26,7 +26,8 @@ const User = sequelize.define('User', {
     lowercase: true
   },
   token: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
 
