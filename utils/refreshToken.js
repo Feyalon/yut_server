@@ -3,6 +3,10 @@ const User = require("../models/User");
 
 const reissueAccessToken = async (refreshToken) => {
   try {
+    if (!refreshToken) {
+      console.log(refreshToken);
+    }
+
     const decoded = jwt.verify(refreshToken, process.env.MERRY);
 
     const user = await User.findOne({ where: { id: decoded.id } });

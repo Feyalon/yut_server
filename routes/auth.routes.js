@@ -8,6 +8,7 @@ const User = require("../models/User");
 require("dotenv").config();
 const { check, validationResult, cookie } = require("express-validator");
 const generateTokens = require("../utils/UserToken");
+const reissueAccessToken = require("../utils/refreshToken");
 
 router.post(
   "/registration",
@@ -50,12 +51,13 @@ router.post("/login", async (req, res) => {
     await bcrypt.hash(password, salt, function (err, hash) {
       if (err) res.status(400).json({ message: "Invalid password" });
 
-      bcrypt.compare(password, user.password, function (err, result) {
+      bcrypt.compare(password, user.password, async function (err, result) {
         if (!result) {
           return res.status(400).json({ message: "Invalid password" });
         }
         const secretKey = process.env.MERRY; // Здесь подставьте ваш секретный ключ для подписи токена
-        const tokens = generateTokens(user);
+        const promiseToken = generateTokens(user);
+        const tokens = await promiseToken
         res
           .cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
@@ -73,9 +75,13 @@ router.post("/login", async (req, res) => {
 
 router.post("/refresh", async (req, res) => {
   try {
-    const { username, password, refreshToken } = req.body;
-    if (res.cookie === refreshToken) {
-      console.log("hello world");
+    const refreshToken  = req.cookies.refreshToken;
+    console.log(refreshToken)
+    try {
+      const tokens = await reissueAccessToken(refreshToken);
+      res.json(tokens.accessToken);
+    } catch (err) {
+      console.log(err);
     }
   } catch (err) {
     console.log(err);
