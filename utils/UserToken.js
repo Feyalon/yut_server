@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/User")
-
 const generateTokens = async (user) => {
     try{
         const payload = {id: user.id, username: user.username, email: user.email}
