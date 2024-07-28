@@ -14,4 +14,17 @@ const profile = async (req, res) => {
   }
 };
 
-module.exports = { profile };
+const profileUpdate = async (req, res) => {
+  try {
+  } catch (err) {
+    console.log(err);
+  }
+};
+const profileDelete = async (req, res) => {
+  try {
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { profile, profileUpdate, profileDelete };

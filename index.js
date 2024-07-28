@@ -17,8 +17,12 @@ const port = 3000
 
 app.get("/", (req, res) => {
   res.send("Hello world")
+
 })
 
 app.listen(port, () => {
-  console.log("server has been started at 3000 port")
+	console.log("server has been started at 3000 port")
+	console.log("hello world")
+
 })
+
