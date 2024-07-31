@@ -1,4 +1,4 @@
-name: npm_workflow
+name: build_workflow
 on:
   push:
     branches: 

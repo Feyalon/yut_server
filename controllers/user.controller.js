@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { jwtDecode } = require("jwt-decode");
 const profile = async (req, res) => {
   try {
-    const token = req.cookies.refreshToken;
+    const token = req.cookies.accessToken;
     const result = jwtDecode(token);
     res.send({
       username: result.username,

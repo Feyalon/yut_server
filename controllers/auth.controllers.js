@@ -42,13 +42,16 @@ const login = async (req, res) => {
         if (!result) {
           return res.status(400).json({ message: "Invalid password" });
         }
-        const secretKey = process.env.MERRY; // Здесь подставьте ваш секретный ключ для подписи токена
+        const secretKey = process.env.MERRY; 
         const promiseToken = generateTokens(user);
         const tokens = await promiseToken;
         res
           .cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
             sameSite: "strict",
+          }).cookie("accessToken", tokens.accessToken, {
+            httpOnly: true,
+            sameSite: "strict"
           })
           .header("Authorization", tokens.accessToken)
           .send("login sucessfull");
