@@ -9,4 +9,6 @@ jobs:
     steps:
       - name: Print Hello world
         run: echo GHACTIONS
+      - name: node
+        run: node --version
       
