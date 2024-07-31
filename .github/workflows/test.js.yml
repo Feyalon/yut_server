@@ -14,5 +14,4 @@ jobs:
           node-version: '20.x'
       - name: Install dependencies
         run: npm install
-      - name: localhost start
-        run: npm start
+
