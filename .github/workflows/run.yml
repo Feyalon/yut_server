@@ -1,5 +1,8 @@
 name: run_workflow
-on: workflow_dispatch
+on:
+  push:
+    branches: 
+      - main
 jobs:
   print:
     runs-on: ubuntu-latest
