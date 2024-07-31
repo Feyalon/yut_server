@@ -11,4 +11,7 @@ jobs:
         run: echo GHACTIONS
       - name: node
         run: node --version
-      
+      - name: npm
+        run: npm --version
+      - name: npm install
+        run: npm install
