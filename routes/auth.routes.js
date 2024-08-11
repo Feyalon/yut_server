@@ -4,7 +4,7 @@ const {
   registration,
   login,
   refresh_token,
-} = require("../controllers/auth.controllers");
+} = require("../controllers/auth.controller");
 
 router.post(
   "/registration",
