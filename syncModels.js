@@ -1,8 +1,8 @@
 const sequelize = require('./db');
-const User = require('./models/user');
-const Post = require('./models/post');
-const File = require('./models/file');
-const PostFile = require('./models/postFile'); // Если у вас есть промежуточная модель
+const User = require('./models/User');
+const Post = require('./models/Post');
+const File = require('./models/File');
+const PostFile = require('./models/PostFile'); // Если у вас есть промежуточная модель
 
 // Синхронизация всех моделей с базой данных
 sequelize.sync({ alter: true })

@@ -1,7 +1,7 @@
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const User = require('./user'); // Предполагается, что модель User находится в том же каталоге
+const User = require('./User'); // Предполагается, что модель User находится в том же каталоге
+const File = require('./File'); // Предполагается, что модель File находится в том же каталоге
 
 const Post = sequelize.define('Post', {
   id: {
@@ -28,5 +28,6 @@ const Post = sequelize.define('Post', {
 
 User.hasMany(Post, { foreignKey: 'userId' });
 Post.belongsTo(User, { foreignKey: 'userId' });
+Post.belongsToMany(File, { through: 'PostFile', foreignKey: 'postId' });
 
 module.exports = Post;

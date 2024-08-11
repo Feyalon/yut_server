@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const User = require('./user'); // Предполагается, что модель User находится в том же каталоге
-const Post = require('./post'); // Предполагается, что модель Post находится в том же каталоге
+const User = require('./User'); // Предполагается, что модель User находится в том же каталоге
+const Post = require('./Post'); // Предполагается, что модель Post находится в том же каталоге
 
 const File = sequelize.define('File', {
   id: {
