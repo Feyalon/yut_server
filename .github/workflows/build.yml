@@ -15,4 +15,4 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Sync Models
-        run: node syncModel.js
+        run: node syncModels.js
